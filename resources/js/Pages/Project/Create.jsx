@@ -49,10 +49,9 @@ export default function Create({ auth }) {
                                     id="project_image_path"
                                     type="file"
                                     name="image"
-                                    value={data.image}
                                     className="mt-1 block w-full"
                                     onChange={(e) =>
-                                        setData("image", e.target.value)
+                                        setData("image", e.target.files[0])
                                     }
                                 />
                                 <InputError
