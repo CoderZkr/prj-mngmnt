@@ -41,6 +41,13 @@ export default function Index({ auth, projects, queryParams = null, success }) {
         router.get(route("project.index"), queryParams);
     };
 
+    const deleteProject = (project) => {
+        if (!window.confirm("Are you sure you want to delete the project?")) {
+            return;
+        }
+        router.delete(route("project.destroy", project.id));
+    };
+
     return (
         <AuthenticatedLayout
             user={auth.user}
@@ -248,7 +255,7 @@ export default function Index({ auth, projects, queryParams = null, success }) {
                                                     {project.createdBy?.name ||
                                                         "N/A"}
                                                 </td>
-                                                <td className="px-3 py-2">
+                                                <td className="px-3 py-2 text-nowrap">
                                                     <Link
                                                         href={route(
                                                             "project.edit",
@@ -258,15 +265,16 @@ export default function Index({ auth, projects, queryParams = null, success }) {
                                                     >
                                                         Edit
                                                     </Link>
-                                                    <Link
-                                                        href={route(
-                                                            "project.destroy",
-                                                            project.id
-                                                        )}
+                                                    <button
+                                                        onClick={(e) =>
+                                                            deleteProject(
+                                                                project
+                                                            )
+                                                        }
                                                         className="font-medium text-red-600 dark:text-red-500 hover:underline mx-1"
                                                     >
                                                         Delete
-                                                    </Link>
+                                                    </button>
                                                 </td>
                                             </tr>
                                         ))}
