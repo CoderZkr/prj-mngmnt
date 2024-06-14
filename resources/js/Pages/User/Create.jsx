@@ -1,24 +1,20 @@
 import InputError from "@/Components/InputError";
 import InputLabel from "@/Components/InputLabel";
-import SelectInput from "@/Components/SelectInput";
-import TextAreaInput from "@/Components/TextAreaInput";
 import TextInput from "@/Components/TextInput";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, Link, useForm } from "@inertiajs/react";
 
-export default function Create({ auth, project }) {
+export default function Create({ auth }) {
     const { data, setData, post, errors, reset } = useForm({
-        image: project.image || "",
-        name: project.name || "",
-        status: project.status || "",
-        description: project.description || "",
-        due_date: project.due_date || "",
-        _method: "PUT",
+        name: "",
+        email: "",
+        password: "",
+        password_confirmation: "",
     });
 
     const onSubmit = (e) => {
         e.preventDefault();
-        post(route("project.update", project.id));
+        post(route("user.store"));
     };
 
     return (
@@ -27,12 +23,12 @@ export default function Create({ auth, project }) {
             header={
                 <div className="flex justify-between items-center">
                     <h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-                        Edit Project "{project.name}"
+                        Create new User
                     </h2>
                 </div>
             }
         >
-            <Head title="Projects" />
+            <Head title="Users" />
 
             <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
@@ -41,40 +37,13 @@ export default function Create({ auth, project }) {
                             onSubmit={onSubmit}
                             className="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg"
                         >
-                            {project.image_path && (
-                                <div className="mb-4">
-                                    <img
-                                        src={project.image_path}
-                                        className="w-64"
-                                    />
-                                </div>
-                            )}
-                            <div>
-                                <InputLabel
-                                    htmlFor="project_image_path"
-                                    value="Project Image"
-                                />
-                                <TextInput
-                                    id="project_image_path"
-                                    type="file"
-                                    name="image"
-                                    className="mt-1 block w-full"
-                                    onChange={(e) =>
-                                        setData("image", e.target.files[0])
-                                    }
-                                />
-                                <InputError
-                                    message={errors.image}
-                                    className="mt-2"
-                                />
-                            </div>
                             <div className="mt-4">
                                 <InputLabel
-                                    htmlFor="project_name"
-                                    value="Project Name"
+                                    htmlFor="user_name"
+                                    value="User Name"
                                 />
                                 <TextInput
-                                    id="project_name"
+                                    id="user_name"
                                     type="text"
                                     name="name"
                                     value={data.name}
@@ -91,71 +60,71 @@ export default function Create({ auth, project }) {
                             </div>
                             <div className="mt-4">
                                 <InputLabel
-                                    htmlFor="project_description"
-                                    value="Project Description"
-                                />
-                                <TextAreaInput
-                                    id="project_description"
-                                    name="description"
-                                    value={data.description}
-                                    className="mt-1 block w-full"
-                                    onChange={(e) =>
-                                        setData("description", e.target.value)
-                                    }
-                                />
-                                <InputError
-                                    message={errors.description}
-                                    className="mt-2"
-                                />
-                            </div>
-                            <div className="mt-4">
-                                <InputLabel
-                                    htmlFor="project_due_date"
-                                    value="Due Date"
+                                    htmlFor="user_email"
+                                    value="User Email"
                                 />
                                 <TextInput
-                                    id="project_due_date"
-                                    type="date"
-                                    name="due_date"
-                                    value={data.due_date}
+                                    id="user_email"
+                                    type="email"
+                                    name="email"
+                                    value={data.email}
                                     className="mt-1 block w-full"
                                     onChange={(e) =>
-                                        setData("due_date", e.target.value)
+                                        setData("email", e.target.value)
                                     }
                                 />
                                 <InputError
-                                    message={errors.due_date}
+                                    message={errors.email}
                                     className="mt-2"
                                 />
                             </div>
                             <div className="mt-4">
                                 <InputLabel
-                                    htmlFor="project_status"
-                                    value="Project Status"
+                                    htmlFor="user_password"
+                                    value="Password"
                                 />
-                                <SelectInput
-                                    id="project_status"
-                                    name="status"
+                                <TextInput
+                                    id="user_password"
+                                    type="password"
+                                    name="password"
+                                    value={data.password}
                                     className="mt-1 block w-full"
                                     onChange={(e) =>
-                                        setData("status", e.target.value)
+                                        setData("password", e.target.value)
                                     }
-                                >
-                                    <option value="">Select Status</option>
-                                    <option value="pending">Pending</option>
-                                    <option value="in_progress">
-                                        In Progress
-                                    </option>
-                                    <option value="completed">Completed</option>
-                                </SelectInput>
+                                />
                                 <InputError
-                                    message={errors.project_status}
+                                    message={errors.password}
                                     className="mt-2"
                                 />
                             </div>
+                            <div className="mt-4">
+                                <InputLabel
+                                    htmlFor="user_password_confirmation"
+                                    value="Confirm Password"
+                                />
+                                <TextInput
+                                    id="user_password_confirmation"
+                                    type="password"
+                                    name="password_confirmation"
+                                    value={data.password_confirmation}
+                                    className="mt-1 block w-full"
+                                    onChange={(e) =>
+                                        setData(
+                                            "password_confirmation",
+                                            e.target.value
+                                        )
+                                    }
+                                />
+                                <InputError
+                                    message={errors.password_confirmation}
+                                    className="mt-2"
+                                />
+                            </div>
+
                             <div className="mt-4 text-right">
                                 <Link
-                                    href={route("project.index")}
+                                    href={route("user.index")}
                                     className="bg-gray-100 py-1 px-3 text-gray-800 rounded shadow transition-all hover:bg-gray-200 mr-2"
                                 >
                                     Cancel
